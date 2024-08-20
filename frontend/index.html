@@ -72,11 +72,11 @@
             for (let i = 0; i < data.length; i++) {
               const { name, price, stock } = data[i];
               rows += `<tr>
-              <td>${++i}</td>
-              <td>${name}</td>
-              <td>${price}</td>
-              <td>${stock}</td>
-            </tr>`;
+                <td>${i + 1}</td>
+                <td>${name}</td>
+                <td>${price}</td>
+                <td>${stock}</td>
+              </tr>`;
             }
 
             el.innerHTML = rows;
