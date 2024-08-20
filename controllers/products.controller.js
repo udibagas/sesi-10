@@ -1,6 +1,4 @@
 const NotFoundError = require("../errors/notfounderror");
-const Customer = require("../models/customer");
-const Order = require("../models/order");
 const Product = require("../models/product");
 
 exports.products = async (req, res) => {
