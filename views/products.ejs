@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <%- include('_nav') %>
+
+      <h1>Products</h1>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% products.forEach(el => { %>
+          <tr>
+            <td><%= el.name %></td>
+            <td><%= el.priceInRupiah %></td>
+            <td><%= el.stock %></td>
+            <td style="text-align: center">
+              <a href="/products/buy/<%= el.id %>">Buy</a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
