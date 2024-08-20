@@ -1,44 +1,26 @@
-const NotFoundError = require("../errors/notfounderror");
 const Product = require("../models/product");
 
-exports.products = async (req, res) => {
+exports.products = async (req, res, next) => {
   try {
     const products = await Product.findAll();
     res.status(200).json(products);
   } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      error: "ServerError",
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-exports.productById = async (req, res) => {
+exports.productById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
     const product = await Product.findById(Number(id));
     res.status(200).json(product);
   } catch (error) {
-    console.log(error);
-
-    if (error.statusCode == 404) {
-      return res.status(404).json({
-        error: error.name,
-        message: error.message,
-      });
-    }
-
-    res.status(500).json({
-      error: "ServerError",
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-exports.createNewProduct = async (req, res) => {
+exports.createNewProduct = async (req, res, next) => {
   console.log(req.body);
   const { name, price, stock } = req.body;
 
@@ -46,15 +28,11 @@ exports.createNewProduct = async (req, res) => {
     const newProduct = await Product.create({ name, price, stock });
     res.status(201).json(newProduct);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: "ServerError",
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-exports.updateProductById = async (req, res) => {
+exports.updateProductById = async (req, res, next) => {
   const { id } = req.params;
   const { name, price, stock } = req.body;
 
@@ -62,23 +40,11 @@ exports.updateProductById = async (req, res) => {
     const product = await Product.update(id, { name, price, stock });
     res.status(200).json(product);
   } catch (error) {
-    console.log(error);
-
-    if (error instanceof NotFoundError) {
-      return res.status(404).json({
-        error: error.name,
-        message: error.message,
-      });
-    }
-
-    res.status(500).json({
-      error: "ServerError",
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-exports.removeProductById = async (req, res) => {
+exports.removeProductById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -87,18 +53,6 @@ exports.removeProductById = async (req, res) => {
       message: "Product has been deleted",
     });
   } catch (error) {
-    console.log(error);
-
-    if (error instanceof NotFoundError) {
-      return res.status(404).json({
-        error: error.name,
-        message: error.message,
-      });
-    }
-
-    res.status(500).json({
-      error: "ServerError",
-      message: error.message,
-    });
+    next(error);
   }
 };

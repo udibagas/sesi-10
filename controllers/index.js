@@ -4,7 +4,7 @@ const Customer = require("../models/customer");
 const Order = require("../models/order");
 
 exports.home = (req, res) => {
-  res.render("home");
+  res.send("OK");
 };
 
 exports.customers = async (req, res) => {
