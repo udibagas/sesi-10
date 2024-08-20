@@ -3,8 +3,7 @@ const router = require("express").Router();
 
 router.get("/", home);
 router.use("/products", require("./products"));
+router.use("/orders", require("./orders"));
 router.get("/customers", customers);
-router.get("/orders", orders);
-router.get("/orders/delete/:id", deleteOrder);
 
 module.exports = router;

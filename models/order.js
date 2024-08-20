@@ -1,4 +1,5 @@
 const pool = require("../db");
+const NotFoundError = require("../errors/notfounderror");
 const Customer = require("./customer");
 const Product = require("./product");
 
@@ -83,6 +84,54 @@ class Order {
     });
 
     return orders;
+  }
+
+  static async findById(id) {
+    const query = `
+      SELECT
+        o.*,
+        c.name AS "customerName",
+        c.gender AS "customerGender",
+        c.phone AS "customerPhone",
+        c.email AS "customerEmail",
+        c.address AS "customerAddress",
+        p.name AS "productName",
+        p.stock AS "productStock",
+        p.price AS "productPrice"
+      FROM "Orders" o
+      JOIN "Customers" c ON c.id = o."CustomerId"
+      JOIN "Products" p ON p.id = o."ProductId"
+      WHERE o.id = $1
+    `;
+    const { rows, rowCount } = await pool.query(query, [id]);
+
+    if (!rowCount) {
+      throw new NotFoundError("Order not found");
+    }
+
+    const order = new Order(
+      rows[0].id,
+      rows[0].date,
+      rows[0].ProductId,
+      rows[0].CustomerId,
+      rows[0].qty,
+      rows[0].price,
+      rows[0].totalAmount,
+      {
+        name: rows[0].customerName,
+        gender: rows[0].customerGender,
+        phone: rows[0].customerPhone,
+        email: rows[0].customerEmail,
+        address: rows[0].customerAddress,
+      },
+      {
+        name: rows[0].productName,
+        price: rows[0].productPrice,
+        stock: rows[0].productStock,
+      }
+    );
+
+    return order;
   }
 
   static async create({ CustomerId, ProductId, qty }) {
