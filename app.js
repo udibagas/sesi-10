@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3000;
 
 // app.use(express.urlencoded({ extended: true })); // TODO
-app.use(express.json());
+app.use(cors()); // handle CORS
+app.use(express.json()); // application/json
 app.use(require("./routes"));
 
 app.use((err, req, res, next) => {

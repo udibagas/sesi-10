@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Shop</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>My Shop</h1>
+
+      <form style="margin: 20px 0" id="form">
+        <p>
+          <label for="name">Name</label> <br />
+          <input type="text" name="name" id="name" />
+        </p>
+
+        <p>
+          <label for="price">Price</label> <br />
+          <input type="number" name="price" id="price" />
+        </p>
+
+        <p>
+          <label for="stock">Stock</label> <br />
+          <input type="number" name="stock" id="stock" />
+        </p>
+
+        <p>
+          <button>Save</button>
+        </p>
+      </form>
+
+      <table border="1" style="width: 100%">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+          </tr>
+        </thead>
+
+        <tbody id="data">
+          <!-- <tr>
+            <td>1</td>
+            <td>Cilok</td>
+            <td>10000</td>
+            <td>100</td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function getData() {
+        fetch("http://localhost:3000/products", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.status !== 200)
+              throw new Error("Error while fetching data");
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            const el = document.querySelector("#data");
+
+            let rows = "";
+            for (let i = 0; i < data.length; i++) {
+              const { name, price, stock } = data[i];
+              rows += `<tr>
+              <td>${++i}</td>
+              <td>${name}</td>
+              <td>${price}</td>
+              <td>${stock}</td>
+            </tr>`;
+            }
+
+            el.innerHTML = rows;
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      }
+
+      getData();
+
+      const formEl = document.querySelector("#form");
+      formEl.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nameEl = document.querySelector("#name");
+        const priceEl = document.querySelector("#price");
+        const stockEl = document.querySelector("#stock");
+
+        const name = nameEl.value;
+        const price = priceEl.valueAsNumber;
+        const stock = stockEl.valueAsNumber;
+
+        console.log({ name, stock, price });
+
+        fetch("http://localhost:3000/products", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, price, stock }),
+        })
+          .then((response) => {
+            if (response.statusText !== "CREATED") {
+              throw new Error("Failed to create new product");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            getData();
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      });
+    </script>
+  </body>
+</html>
