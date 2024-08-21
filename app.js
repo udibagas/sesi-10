@@ -36,9 +36,11 @@ var schema = buildSchema(`
     address: String
   }
 
+  scalar Date
+
   type Order {
     id: Int
-    date: String
+    date: Date
     qty: Int
     totalAmount: Int
     customer: Customer
