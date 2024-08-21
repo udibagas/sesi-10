@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+
+    <div style="display: flex; justify-content: center; gap: 20px">
+      <div>
+        <h2>Products</h2>
+        <table border="1" style="width: 100%">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+
+          <tbody id="products"></tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Customers</h2>
+        <table border="1" style="width: 100%">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+
+          <tbody id="customers"></tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Orders</h2>
+        <table border="1" style="width: 100%">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+
+          <tbody id="orders"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="/main.js"></script>
+  </body>
+</html>
